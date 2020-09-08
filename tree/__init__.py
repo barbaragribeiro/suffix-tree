@@ -1,1 +1,1 @@
-from .tree import Suffix_Trie
+from .tree import Suffix_Tree

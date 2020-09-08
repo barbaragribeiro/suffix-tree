@@ -1,11 +1,11 @@
 import sys
-from tree import Suffix_Trie
+from tree import Suffix_Tree
 
 def main(filename):
     with open(filename, 'r') as fp:
-        dna = ''.join(line for line in fp)
-        tree = Suffix_Trie(dna)
-        print('TODO')
+        next(fp)
+        dna = ''.join(line.strip() for line in fp)
+        tree = Suffix_Tree(dna)
 
 
 if __name__=='__main__':
