@@ -11,7 +11,7 @@ class Node():
 class Suffix_Tree():
     def __init__(self, text):
         self.text = text + '$'
-        self.root = Node(None, is_suffix=False)
+        self.root = Node((0,0), is_suffix=False)
         self.N = len(text)
         
         #Add suffixes *from largest to smaller*
@@ -57,3 +57,34 @@ class Suffix_Tree():
                                 
         father.children.append(Node((idx,self.N+1), is_suffix=True))
         return
+
+    def search_longest_in_branch(self, node):         
+        node_text = self.text[node.idxs[0]:node.idxs[1]]   
+        #if all children are leafs, the longest branch is the node itself
+        substr = self.text[node.idxs[0]:node.idxs[1]]  
+        end = node.idxs[1]
+
+        for child in node.children:
+            if not child.is_suffix:
+                child_text = self.text[child.idxs[0]:child.idxs[1]]
+                #find the longest local branch that starts at the current child
+                local_end, local_substr = self.search_longest_in_branch(child)   
+                #update the longest branch among the node's children
+                if len(node_text + local_substr) > len(substr):
+                    end = local_end
+                    substr = node_text + local_substr
+
+        #return the longest branch starting at the current node
+        return end, substr
+
+    def longest_repeated_substr(self):
+        '''
+        Finds the longest repeated substring in the text by finding the "deepest" 
+        internal node, i.e., the one whose branch have the larger 
+        Since all we have to do is to walk through the tree, the algorithm is O(N)
+        '''
+        sys.setrecursionlimit(10000)
+
+        end, substr = self.search_longest_in_branch(self.root)
+
+        return substr, end - len(substr)

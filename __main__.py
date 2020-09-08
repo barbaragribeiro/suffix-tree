@@ -6,6 +6,7 @@ def main(filename):
         next(fp)
         dna = ''.join(line.strip() for line in fp)
         tree = Suffix_Tree(dna)
+        print(tree.longest_repeated_substr())
 
 
 if __name__=='__main__':
