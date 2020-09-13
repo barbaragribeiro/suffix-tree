@@ -63,19 +63,20 @@ class Suffix_Tree():
         #if all children are leafs, the longest branch is the node itself
         substr = self.text[node.idxs[0]:node.idxs[1]]  
         end = node.idxs[1]
+        children = len(node.children)
 
         for child in node.children:
             if not child.is_suffix:
-                child_text = self.text[child.idxs[0]:child.idxs[1]]
                 #find the longest local branch that starts at the current child
-                local_end, local_substr = self.search_longest_in_branch(child)   
+                local_end, local_substr, child_children = self.search_longest_in_branch(child)   
                 #update the longest branch among the node's children
                 if len(node_text + local_substr) > len(substr):
                     end = local_end
                     substr = node_text + local_substr
+                    children = child_children
 
         #return the longest branch starting at the current node
-        return end, substr
+        return end, substr, children
 
     def longest_repeated_substr(self):
         '''
@@ -85,6 +86,6 @@ class Suffix_Tree():
         '''
         sys.setrecursionlimit(10000)
 
-        end, substr = self.search_longest_in_branch(self.root)
+        end, substr, children = self.search_longest_in_branch(self.root)
 
-        return substr, end - len(substr)
+        return substr, end - len(substr), children
