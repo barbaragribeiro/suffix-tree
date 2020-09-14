@@ -4,8 +4,8 @@ from tree import Suffix_Tree
 def main(filename):
     with open(filename, 'r') as fp:
         next(fp)
-        dna = ''.join(line.strip() for line in fp)
-        tree = Suffix_Tree(dna)
+        rna = ''.join(line.strip() for line in fp)
+        tree = Suffix_Tree(rna)
         print(tree.longest_repeated_substr())
 
 
